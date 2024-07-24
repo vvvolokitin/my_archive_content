@@ -1,3 +1,34 @@
 from django.contrib import admin
 
-# Register your models here.
+from content.models import Status, MovieGenre, Movie
+
+
+@admin.register(Status)
+class StatusAdmin(admin.ModelAdmin):
+    list_display = (
+        'status',
+    )
+
+
+@admin.register(MovieGenre)
+class MovieGenre(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'slug'
+    )
+
+
+@admin.register(Movie)
+class MovieAdmin(admin.ModelAdmin):
+    list_display = (
+        'title',
+        'original_title',
+        'year',
+        'status'
+    )
+    search_fields = (
+        'title',
+        'original_title',
+        'genre'
+    )
+    filter_horizontal = ('genre',)
