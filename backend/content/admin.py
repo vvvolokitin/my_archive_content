@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from content.models import Status, MovieGenre, Movie, Serial
+from content.models import Status, MovieGenre, Movie, Serial, Game, GameGenre
 
 
 @admin.register(Status)
@@ -11,7 +11,15 @@ class StatusAdmin(admin.ModelAdmin):
 
 
 @admin.register(MovieGenre)
-class MovieGenre(admin.ModelAdmin):
+class MovieGenreAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'slug'
+    )
+
+
+@admin.register(GameGenre)
+class GameGenreAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'slug'
@@ -45,6 +53,20 @@ class SerialAdmin(admin.ModelAdmin):
     search_fields = (
         'title',
         'original_title',
+        'genre'
+    )
+    filter_horizontal = ('genre',)
+
+
+@admin.register(Game)
+class GameAdmin(admin.ModelAdmin):
+    list_display = (
+        'title',
+        'year',
+        'status'
+    )
+    search_fields = (
+        'title',
         'genre'
     )
     filter_horizontal = ('genre',)

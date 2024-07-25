@@ -166,3 +166,46 @@ class Serial(models.Model):
                 name='unique_serial'
             )
         ]
+
+
+class Game(models.Model):
+    title = models.CharField(
+        verbose_name='Название',
+        max_length=LENGTH_NAME_TITLE
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name='Год выхода',
+    )
+    description = models.TextField(
+        verbose_name='Описание',
+        blank=True
+    )
+    genre = models.ManyToManyField(
+        GameGenre,
+        related_name='games'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='games'
+    )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата добавления',
+        auto_now_add=True,
+        db_index=True
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = 'Игра'
+        verbose_name_plural = 'Игры'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'year', 'user'],
+                name='unique_game'
+            )
+        ]
