@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
+from core.constants_content import LENGTH_NAME_TITLE
+
 
 User = get_user_model()
 
@@ -8,7 +10,7 @@ User = get_user_model()
 class BaseGenreModel(models.Model):
     name = models.CharField(
         verbose_name='Название',
-        max_length=250,
+        max_length=LENGTH_NAME_TITLE,
         unique=True,
     )
     slug = models.SlugField(
@@ -73,11 +75,11 @@ class Movie(models.Model):
 
     title = models.CharField(
         verbose_name='title',
-        max_length=250,
+        max_length=LENGTH_NAME_TITLE,
     )
     original_title = models.CharField(
         verbose_name='Оригинальное название',
-        max_length=250
+        max_length=LENGTH_NAME_TITLE
     )
     year = models.PositiveSmallIntegerField(
         verbose_name='Год выхода',
@@ -113,5 +115,54 @@ class Movie(models.Model):
             models.UniqueConstraint(
                 fields=['title', 'year', 'user'],
                 name='unique_movie'
+            )
+        ]
+
+
+class Serial(models.Model):
+    """Модель сериалов."""
+
+    title = models.CharField(
+        verbose_name='title',
+        max_length=LENGTH_NAME_TITLE,
+    )
+    original_title = models.CharField(
+        verbose_name='Оригинальное название',
+        max_length=LENGTH_NAME_TITLE
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name='Год выхода',
+    )
+    description = models.TextField(
+        verbose_name='Описание',
+        blank=True
+    )
+    genre = models.ManyToManyField(
+        MovieGenre,
+        related_name='serials'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='serials'
+    )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата добавления',
+        auto_now_add=True,
+        db_index=True
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = 'Сериал'
+        verbose_name_plural = 'Сериалы'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'year', 'user'],
+                name='unique_serial'
             )
         ]
