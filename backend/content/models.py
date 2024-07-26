@@ -70,23 +70,41 @@ class Status(models.Model):
         return self.status
 
 
-class Movie(models.Model):
-    """Модель фильмов."""
+class BaseContentModel(models.Model):
+    """Базовая модель для контента."""
 
     title = models.CharField(
-        verbose_name='title',
-        max_length=LENGTH_NAME_TITLE,
-    )
-    original_title = models.CharField(
-        verbose_name='Оригинальное название',
+        verbose_name='Название',
         max_length=LENGTH_NAME_TITLE
     )
     year = models.PositiveSmallIntegerField(
-        verbose_name='Год выхода',
+        verbose_name='Год выхода'
     )
     description = models.TextField(
         verbose_name='Описание',
         blank=True
+    )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата добавления',
+        auto_now_add=True,
+        db_index=True
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        ordering = ('pub_date')
+        abstract = True
+
+
+class Movie(BaseContentModel):
+    """Модель фильмов."""
+
+    original_title = models.CharField(
+        verbose_name='Оригинальное название',
+        max_length=LENGTH_NAME_TITLE
     )
     genre = models.ManyToManyField(
         MovieGenre,
@@ -97,15 +115,6 @@ class Movie(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
         related_name='movies'
-    )
-    pub_date = models.DateTimeField(
-        verbose_name='Дата добавления',
-        auto_now_add=True,
-        db_index=True
-    )
-    status = models.ForeignKey(
-        Status,
-        on_delete=models.PROTECT
     )
 
     class Meta:
@@ -119,23 +128,12 @@ class Movie(models.Model):
         ]
 
 
-class Serial(models.Model):
+class Serial(BaseContentModel):
     """Модель сериалов."""
 
-    title = models.CharField(
-        verbose_name='title',
-        max_length=LENGTH_NAME_TITLE,
-    )
     original_title = models.CharField(
         verbose_name='Оригинальное название',
         max_length=LENGTH_NAME_TITLE
-    )
-    year = models.PositiveSmallIntegerField(
-        verbose_name='Год выхода',
-    )
-    description = models.TextField(
-        verbose_name='Описание',
-        blank=True
     )
     genre = models.ManyToManyField(
         MovieGenre,
@@ -146,15 +144,6 @@ class Serial(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
         related_name='serials'
-    )
-    pub_date = models.DateTimeField(
-        verbose_name='Дата добавления',
-        auto_now_add=True,
-        db_index=True
-    )
-    status = models.ForeignKey(
-        Status,
-        on_delete=models.PROTECT
     )
 
     class Meta:
@@ -168,18 +157,9 @@ class Serial(models.Model):
         ]
 
 
-class Game(models.Model):
-    title = models.CharField(
-        verbose_name='Название',
-        max_length=LENGTH_NAME_TITLE
-    )
-    year = models.PositiveSmallIntegerField(
-        verbose_name='Год выхода',
-    )
-    description = models.TextField(
-        verbose_name='Описание',
-        blank=True
-    )
+class Game(BaseContentModel):
+    """Модель игр."""
+
     genre = models.ManyToManyField(
         GameGenre,
         related_name='games'
@@ -189,15 +169,6 @@ class Game(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
         related_name='games'
-    )
-    pub_date = models.DateTimeField(
-        verbose_name='Дата добавления',
-        auto_now_add=True,
-        db_index=True
-    )
-    status = models.ForeignKey(
-        Status,
-        on_delete=models.PROTECT
     )
 
     class Meta:
@@ -211,13 +182,9 @@ class Game(models.Model):
         ]
 
 
-class Book(models.Model):
+class Book(BaseContentModel):
     """Модель книг."""
 
-    title = models.CharField(
-        verbose_name='название',
-        max_length=LENGTH_NAME_TITLE
-    )
     original_title = models.CharField(
         verbose_name='Оригинальное название',
         max_length=LENGTH_NAME_TITLE
@@ -225,13 +192,6 @@ class Book(models.Model):
     author = models.CharField(
         verbose_name='Автор',
         max_length=250
-    )
-    year = models.PositiveSmallIntegerField(
-        verbose_name='Год выхода'
-    )
-    description = models.TextField(
-        verbose_name='Описание',
-        blank=True
     )
     genre = models.ManyToManyField(
         BookGenre,
@@ -242,15 +202,6 @@ class Book(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Пользователь',
         related_name='books'
-    )
-    pub_date = models.DateTimeField(
-        verbose_name='Дата добавления',
-        auto_now_add=True,
-        db_index=True
-    )
-    status = models.ForeignKey(
-        Status,
-        on_delete=models.PROTECT
     )
 
     class Meta:
