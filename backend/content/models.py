@@ -51,7 +51,7 @@ class BookGenre(BaseGenreModel):
 
     class Meta:
         verbose_name = 'Жанр книги'
-        verbose_name_plural = 'Жанры книг',
+        verbose_name_plural = 'Жанры книг'
 
 
 class Status(models.Model):
@@ -207,5 +207,58 @@ class Game(models.Model):
             models.UniqueConstraint(
                 fields=['title', 'year', 'user'],
                 name='unique_game'
+            )
+        ]
+
+
+class Book(models.Model):
+    """Модель книг."""
+
+    title = models.CharField(
+        verbose_name='название',
+        max_length=LENGTH_NAME_TITLE
+    )
+    original_title = models.CharField(
+        verbose_name='Оригинальное название',
+        max_length=LENGTH_NAME_TITLE
+    )
+    author = models.CharField(
+        verbose_name='Автор',
+        max_length=250
+    )
+    year = models.PositiveSmallIntegerField(
+        verbose_name='Год выхода'
+    )
+    description = models.TextField(
+        verbose_name='Описание',
+        blank=True
+    )
+    genre = models.ManyToManyField(
+        BookGenre,
+        related_name='books'
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Пользователь',
+        related_name='books'
+    )
+    pub_date = models.DateTimeField(
+        verbose_name='Дата добавления',
+        auto_now_add=True,
+        db_index=True
+    )
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        verbose_name = 'Книга'
+        verbose_name_plural = 'Книги'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['title', 'year', 'user'],
+                name='unique_book'
             )
         ]
