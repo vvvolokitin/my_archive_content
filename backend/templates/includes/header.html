@@ -1,4 +1,44 @@
 <header>
-    <nav class="navbar navbar-light" style="background-color: #2F4F4F">
+  <nav class="navbar navbar-light" style="background-color: #2F4F4F">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'content:home' %}">
+      <span class="text-warning"><b>My</b></span><font color="white">ArchiveContent</font>
+    </a>
+    
+    {% if user.is_authenticated %}
+      <div class="nav-item align-self-center mt-1">
+        <font  color="white">
+          пользователя {{ user.username }}
+        </font>
+      </div>
+    <div class="spacer flex-grow-1"></div>
+    {% endif %}
+    <ul class="nav nav-pills">
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link active" href=""> <font color = "white">Фильмы</font></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Сериалы</font></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Книги</font></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Игры</font></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Выйти</font></a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Войти</font></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href=""> <font color = "white">Регистрация</font></a>
+        </li>
+      {% endif %}
+    
+    </div>
     </nav>
 </header>
