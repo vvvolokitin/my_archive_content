@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Список</h2>
+  <ul>
+    {% for note in object_list %}
+      <li>
+        {{ note.title }}
+        {{ note.year }}
+        {{ note.status }}
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock content %}

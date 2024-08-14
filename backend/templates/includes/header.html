@@ -1,4 +1,5 @@
 <header>
+  {% with request.resolver_match.view_name as view_name %}
   <nav class="navbar navbar-light" style="background-color: #2F4F4F">
   <div class="container">
     <a class="navbar-brand" href="{% url 'content:home' %}">
@@ -16,16 +17,16 @@
     <ul class="nav nav-pills">
       {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link active" href=""> <font color = "white">Фильмы</font></a>
+          <a class="nav-link {% if view_name == 'content:movie' %} active {% endif %}" href="{% url 'content:movie' %}"> <font color = "white">Фильмы</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Сериалы</font></a>
+          <a class="nav-link {% if view_name == 'content:serial' %} active {% endif %}" href="{% url 'content:serial' %}"> <font color = "white">Сериалы</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Книги</font></a>
+          <a class="nav-link {% if view_name == 'content:book' %} active {% endif %}" href="{% url 'content:book' %}"> <font color = "white">Книги</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Игры</font></a>
+          <a class="nav-link {% if view_name == 'content:game' %} active {% endif %}" href="{% url 'content:game' %}"> <font color = "white">Игры</font></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href=""> <font color = "white">Выйти</font></a>
@@ -41,4 +42,5 @@
     
     </div>
     </nav>
+    {% endwith %}
 </header>
