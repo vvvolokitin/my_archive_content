@@ -3,10 +3,39 @@ from django.contrib import admin
 from content.models import Status, MovieGenre, Movie, Serial, Game, GameGenre, Book, BookGenre
 
 
+admin.site.empty_value_display = 'Не задано'
+
+
+class MovieInline(admin.TabularInline):
+    model = Movie
+    extra = 0
+
+
+class SerailInline(admin.TabularInline):
+    model = Serial
+    extra = 0
+
+
+class GameInline(admin.TabularInline):
+    model = Game
+    extra = 0
+
+
+class BookInline(admin.TabularInline):
+    model = Book
+    extra = 0
+
+
 @admin.register(Status)
 class StatusAdmin(admin.ModelAdmin):
     list_display = (
         'status',
+    )
+    inlines = (
+        MovieInline,
+        SerailInline,
+        GameInline,
+        BookInline
     )
 
 
@@ -47,6 +76,14 @@ class MovieAdmin(admin.ModelAdmin):
         'original_title',
         'genre'
     )
+    list_editable = (
+        'status',
+    )
+    list_filter = (
+        'year',
+        'genre',
+        'status',
+    )
     filter_horizontal = ('genre',)
 
 
@@ -63,6 +100,14 @@ class SerialAdmin(admin.ModelAdmin):
         'original_title',
         'genre'
     )
+    list_editable = (
+        'status',
+    )
+    list_filter = (
+        'year',
+        'genre',
+        'status',
+    )
     filter_horizontal = ('genre',)
 
 
@@ -76,6 +121,14 @@ class GameAdmin(admin.ModelAdmin):
     search_fields = (
         'title',
         'genre'
+    )
+    list_editable = (
+        'status',
+    )
+    list_filter = (
+        'year',
+        'genre',
+        'status',
     )
     filter_horizontal = ('genre',)
 
@@ -91,5 +144,13 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = (
         'title',
         'genre'
+    )
+    list_editable = (
+        'status',
+    )
+    list_filter = (
+        'year',
+        'genre',
+        'status',
     )
     filter_horizontal = ('genre',)
