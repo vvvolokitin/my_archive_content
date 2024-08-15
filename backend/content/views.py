@@ -13,7 +13,9 @@ def movie(request):
     """Страница фильмов."""
 
     template = 'content/content.html'
-    object_list = Movie.objects.all()
+    object_list = Movie.objects.select_related(
+        'status'
+    ).prefetch_related('genre')
     context = {
         'object_list': object_list
     }
@@ -24,7 +26,9 @@ def serial(request):
     """Страница сериалов."""
 
     template = 'content/content.html'
-    object_list = Serial.objects.all()
+    object_list = Serial.objects.select_related(
+        'status'
+    ).prefetch_related('genre')
     context = {
         'object_list': object_list
     }
@@ -35,7 +39,9 @@ def game(request):
     """Страница игр."""
 
     template = 'content/content.html'
-    object_list = Game.objects.all()
+    object_list = Game.objects.select_related(
+        'status'
+    ).prefetch_related('genre')
     context = {
         'object_list': object_list
     }
@@ -46,7 +52,9 @@ def book(request):
     """Страница книг."""
 
     template = 'content/content.html'
-    object_list = Book.objects.all()
+    object_list = Book.objects.select_related(
+        'status'
+    ).prefetch_related('genre')
     context = {
         'object_list': object_list
     }
