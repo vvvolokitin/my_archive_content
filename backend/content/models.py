@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.validators import MinValueValidator, MaxValueValidator
 
-from core.constants_content import LENGTH_NAME_TITLE
+from core.constants_content import LENGTH_NAME_TITLE, MIN_YEAR, MAX_YEAR
 
 
 User = get_user_model()
@@ -78,7 +79,17 @@ class BaseContentModel(models.Model):
         max_length=LENGTH_NAME_TITLE
     )
     year = models.PositiveSmallIntegerField(
-        verbose_name='Год выхода'
+        verbose_name='Год выхода',
+        validators=(
+            MinValueValidator(
+                MIN_YEAR,
+                message=f'Минимальный год {MIN_YEAR}'
+            ),
+            MaxValueValidator(
+                MAX_YEAR,
+                message=f'Максимальный год {MAX_YEAR}'
+            ),
+        )
     )
     description = models.TextField(
         verbose_name='Описание',

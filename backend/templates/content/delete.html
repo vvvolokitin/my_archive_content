@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Удалить запись?</h2>
+  <hr>
+  <h3>{{ note.title }}</h3>
+  <p>{{ note.description }}</p>
+  <form class="form-horizontal" method="post">
+    {% csrf_token %}
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" >Удалить</button>
+    </div>
+  </form>
+{% endblock content %}

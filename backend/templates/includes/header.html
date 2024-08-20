@@ -17,16 +17,16 @@
     <ul class="nav nav-pills">
       {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link {% if view_name == 'content:movie' %} active {% endif %}" href="{% url 'content:movie' %}"> <font color = "white">Фильмы</font></a>
+          <a class="nav-link {% if 'movie' in request.path %} active {% endif %}" href="{% url 'content:movie' %}"> <font color = "white">Фильмы</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if view_name == 'content:serial' %} active {% endif %}" href="{% url 'content:serial' %}"> <font color = "white">Сериалы</font></a>
+          <a class="nav-link {% if 'serial' in request.path %} active {% endif %}" href="{% url 'content:serial' %}"> <font color = "white">Сериалы</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if view_name == 'content:book' %} active {% endif %}" href="{% url 'content:book' %}"> <font color = "white">Книги</font></a>
+          <a class="nav-link {% if 'book' in request.path %} active {% endif %}" href="{% url 'content:book' %}"> <font color = "white">Книги</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {% if view_name == 'content:game' %} active {% endif %}" href="{% url 'content:game' %}"> <font color = "white">Игры</font></a>
+          <a class="nav-link {% if 'game' in request.path %} active {% endif %}" href="{% url 'content:game' %}"> <font color = "white">Игры</font></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href=""> <font color = "white">Выйти</font></a>
@@ -39,8 +39,24 @@
           <a class="nav-link" href=""> <font color = "white">Регистрация</font></a>
         </li>
       {% endif %}
-    
+      </ul>
     </div>
+    {% if user.is_authenticated and view_name != 'content:home' %}
+    <div class="container">
+      <ul class="nav nav-pills">
+        <li class="nav-item">
+          <a class="nav-link" href=
+            {% if 'movie' in request.path %} "{% url  'content:movie_create'%}"
+            {% elif 'serial' in request.path %}  "{% url  'content:serial_create' %}"
+            {% elif 'book' in request.path %}  "{% url  'content:book_create' %}" 
+            {% elif 'game' in request.path %}  "{% url  'content:game_create' %}"
+            {% endif %}
+            "{% url 'content:home' %}">
+          <font color = "white">Добавить запись</font></a>
+        </li>
+      </ul>
+    </div>
+    {% endif %}
     </nav>
     {% endwith %}
 </header>
