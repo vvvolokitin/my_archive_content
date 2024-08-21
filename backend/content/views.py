@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
+from django.core.paginator import Paginator
 
 from content.models import Movie, Serial, Game, Book
 from content.forms import MovieForm, SerialForm, BookForm, GameForm
+
+from core.constants_content import COUNT_OBJ_ON_PAGE
 
 
 class Home(generic.TemplateView):
@@ -13,14 +16,19 @@ class Home(generic.TemplateView):
 def movie(request):
     """Страница фильмов."""
 
-    template = 'content/content.html'
-    object_list = Movie.objects.select_related(
+    movies = Movie.objects.select_related(
         'status'
     ).prefetch_related('genre')
+    paginator = Paginator(movies, COUNT_OBJ_ON_PAGE)
+    page_obj = paginator.get_page(request.GET.get('page'))
     context = {
-        'object_list': object_list
+        'page_obj': page_obj
     }
-    return render(request, template, context)
+    return render(
+        request,
+        'content/content.html',
+        context
+    )
 
 
 def movie_create(request, pk=None):
@@ -61,14 +69,19 @@ def movie_delete(request, pk):
 def serial(request):
     """Страница сериалов."""
 
-    template = 'content/content.html'
-    object_list = Serial.objects.select_related(
+    serials = Serial.objects.select_related(
         'status'
     ).prefetch_related('genre')
+    paginator = Paginator(serials, COUNT_OBJ_ON_PAGE)
+    page_obj = paginator.get_page(request.GET.get('page'))
     context = {
-        'object_list': object_list
+        'page_obj': page_obj
     }
-    return render(request, template, context)
+    return render(
+        request,
+        'content/content.html',
+        context
+    )
 
 
 def serial_create(request, pk=None):
@@ -109,14 +122,19 @@ def serial_delete(request, pk):
 def game(request):
     """Страница игр."""
 
-    template = 'content/content.html'
-    object_list = Game.objects.select_related(
+    games = Game.objects.select_related(
         'status'
     ).prefetch_related('genre')
+    paginator = Paginator(games, COUNT_OBJ_ON_PAGE)
+    page_obj = paginator.get_page(request.GET.get('page'))
     context = {
-        'object_list': object_list
+        'page_obj': page_obj
     }
-    return render(request, template, context)
+    return render(
+        request,
+        'content/content.html',
+        context
+    )
 
 
 def game_create(request, pk=None):
@@ -157,14 +175,19 @@ def game_delete(request, pk):
 def book(request):
     """Страница книг."""
 
-    template = 'content/content.html'
-    object_list = Book.objects.select_related(
+    books = Book.objects.select_related(
         'status'
     ).prefetch_related('genre')
+    paginator = Paginator(books, COUNT_OBJ_ON_PAGE)
+    page_obj = paginator.get_page(request.GET.get('page'))
     context = {
-        'object_list': object_list
+        'page_obj': page_obj
     }
-    return render(request, template, context)
+    return render(
+        request,
+        'content/content.html',
+        context
+    )
 
 
 def book_create(request, pk=None):

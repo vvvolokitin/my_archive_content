@@ -106,7 +106,10 @@ class BaseContentModel(models.Model):
     )
 
     class Meta:
-        ordering = ('pub_date')
+        ordering = (
+            '-year',
+            'pub_date'
+        )
         abstract = True
 
 
@@ -128,7 +131,7 @@ class Movie(BaseContentModel):
         related_name='movies'
     )
 
-    class Meta:
+    class Meta(BaseContentModel.Meta):
         verbose_name = 'Фильм'
         verbose_name_plural = 'Фильмы'
         constraints = [
@@ -157,7 +160,7 @@ class Serial(BaseContentModel):
         related_name='serials'
     )
 
-    class Meta:
+    class Meta(BaseContentModel.Meta):
         verbose_name = 'Сериал'
         verbose_name_plural = 'Сериалы'
         constraints = [
@@ -182,7 +185,7 @@ class Game(BaseContentModel):
         related_name='games'
     )
 
-    class Meta:
+    class Meta(BaseContentModel.Meta):
         verbose_name = 'Игра'
         verbose_name_plural = 'Игры'
         constraints = [
@@ -215,7 +218,7 @@ class Book(BaseContentModel):
         related_name='books'
     )
 
-    class Meta:
+    class Meta(BaseContentModel.Meta):
         verbose_name = 'Книга'
         verbose_name_plural = 'Книги'
         constraints = [
