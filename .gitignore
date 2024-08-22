@@ -33,3 +33,5 @@ venv.bak/
 
 static/
 media/
+
+sent_emails/

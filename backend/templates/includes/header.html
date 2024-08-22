@@ -29,11 +29,14 @@
           <a class="nav-link {% if 'game' in request.path %} active {% endif %}" href="{% url 'content:game' %}"> <font color = "white">Игры</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Выйти</font></a>
+          <form action="{% url 'logout' %}" method="post" >
+            {% csrf_token %}
+            <button  style="background-color: transparent; background-repeat: no-repeat; border: none; cursor: pointer; overflow: hidden; outline: none;"  type="submit" class="btn btn-primary" id="submit_button"><font color = "white">Выйти</font></button>
+        </form>
         </li>
       {% else %}
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Войти</font></a>
+          <a class="nav-link{% if view_name == 'login' %} active {% endif %}" href="{% url 'login' %}"><font color = "white">Вoйти</font></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href=""> <font color = "white">Регистрация</font></a>

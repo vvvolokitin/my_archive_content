@@ -11,6 +11,7 @@
           {% elif 'book' in request.path %}  "{% url 'content:book_detail' object.pk %}" 
           {% elif 'game' in request.path %}  "{% url 'content:game_detail' object.pk %}"
           {% endif %} >
+          <font color = "black"><h6>
         {{ object.title }} |
         {{ object.year }} г. |
         {% if object.author %}
@@ -20,6 +21,8 @@
         {% for genre in object.genre.all %}
           {{ genre.name }},
         {% endfor %}
+          </h4>
+          </font>
         </a>
     </li>
     
