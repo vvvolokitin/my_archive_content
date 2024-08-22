@@ -1,17 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>{{ object.title }} </h2>
-  <hr>
+<div class="row justify-content-center">
+  <div class="col-md-6 p-5">
+      <div class="card">
+        <div class="card-header">  <h2>{{ object.title }} </h2></div>
+ 
+        <div class="card-body">
   Год выхода: {{ object.year }} <br>
     {% if object.author %}
     Автор: {{ object.author }}  <br>
   {% endif %}
   <p> Описание: {{ object.description }}</p>
   Статус: {{ object.status.status }} <br>
-  {% for genre in object.genre.all %}
-    {{ genre.name }},
-  {% endfor %}
+  {% if object.genre.all %}
+         Жанр: {% for genre in object.genre.all %}
+          {{ genre.name }}
+          {% if forloop.last%}
+          {% else%}
+          , 
+          {% endif %}
+          {% endfor %}
+  {% endif %}
   <div>
     <a href= 
     {% if 'movie' in request.path %} "{% url 'content:movie_edit' object.pk %}"
@@ -26,4 +36,8 @@
     {% elif 'game' in request.path %}  "{% url 'content:game_delete' object.pk %}"
     {% endif %} >Удалить запись</a>
   </div>
+</div>
+</div>
+</div>
+</div>
 {% endblock content %}

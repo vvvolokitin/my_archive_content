@@ -39,7 +39,7 @@
           <a class="nav-link{% if view_name == 'login' %} active {% endif %}" href="{% url 'login' %}"><font color = "white">Вoйти</font></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href=""> <font color = "white">Регистрация</font></a>
+          <a class="nav-link{% if view_name == 'registration' %} active {% endif %}" href="{% url 'registration' %}"><font color = "white">Регистрация</font></a>
         </li>
       {% endif %}
       </ul>
