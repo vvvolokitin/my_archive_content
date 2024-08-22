@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Список</h2>
-  <ul>
+<div class="row justify-content-center">
+  <div class="col-md-6 p-5">
+      <div class="card">
+        <div class="card-header"> <h2>Список</h2></div>
+
+
     {% for object in page_obj %}
-      <li>
+    <div class="card-body">
         <a href= 
           {% if 'movie' in request.path %} "{% url 'content:movie_detail' object.pk %}"
           {% elif 'serial' in request.path %}  "{% url 'content:serial_detail' object.pk %}"
@@ -12,21 +16,28 @@
           {% elif 'game' in request.path %}  "{% url 'content:game_detail' object.pk %}"
           {% endif %} >
           <font color = "black"><h6>
-        {{ object.title }} |
-        {{ object.year }} г. |
+        {{ object.title }} 
+        | {{ object.year }} г. 
         {% if object.author %}
-          Автор: {{ object.author }} |
+          | Автор: {{ object.author }} 
         {% endif %}
-        Статус: {{ object.status.status }} |
-        {% for genre in object.genre.all %}
-          {{ genre.name }},
+          | Статус: {{ object.status.status }}
+        {% if object.genre.all %}
+        | Жанр: {% for genre in object.genre.all %}
+          {{ genre.name }}
+          {% if forloop.last%}
+          {% else%}
+          , 
+          {% endif %}
         {% endfor %}
+        {% endif %}
           </h4>
           </font>
         </a>
-    </li>
-    
+      </div>
     {% endfor %}
-  </ul>
+  </div>
+</div>
+</div>
   {% include "includes/paginator.html" %}
 {% endblock content %}
