@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>{{ object.title }} </h2>
+  <hr>
+  Год выхода: {{ object.year }} <br>
+    {% if object.author %}
+    Автор: {{ object.author }}  <br>
+  {% endif %}
+  <p> Описание: {{ object.description }}</p>
+  Статус: {{ object.status.status }} <br>
+  {% for genre in object.genre.all %}
+    {{ genre.name }},
+  {% endfor %}
+  <div>
+    <a href= 
+    {% if 'movie' in request.path %} "{% url 'content:movie_edit' object.pk %}"
+    {% elif 'serial' in request.path %}  "{% url 'content:serial_edit' object.pk %}"
+    {% elif 'book' in request.path %}  "{% url 'content:book_edit' object.pk %}" 
+    {% elif 'game' in request.path %}  "{% url 'content:game_edit' object.pk %}"
+    {% endif %} >Изменить запись</a> | 
+    <a href= 
+    {% if 'movie' in request.path %} "{% url 'content:movie_delete' object.pk %}"
+    {% elif 'serial' in request.path %}  "{% url 'content:serial_delete' object.pk %}"
+    {% elif 'book' in request.path %}  "{% url 'content:book_delete' object.pk %}" 
+    {% elif 'game' in request.path %}  "{% url 'content:game_delete' object.pk %}"
+    {% endif %} >Удалить запись</a>
+  </div>
+{% endblock content %}

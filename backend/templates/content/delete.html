@@ -3,8 +3,8 @@
 {% block content %}
   <h2>Удалить запись?</h2>
   <hr>
-  <h3>{{ note.title }}</h3>
-  <p>{{ note.description }}</p>
+  <h3>{{ object.title }}</h3>
+  <p>{{ object.description }}</p>
   <form class="form-horizontal" method="post">
     {% csrf_token %}
     <div class="form-actions">

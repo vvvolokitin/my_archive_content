@@ -1,10 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.views import generic
-from django.core.paginator import Paginator
+from django.views.generic import ListView, UpdateView, DeleteView, CreateView, DetailView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from content.models import Movie, Serial, Game, Book
 from content.forms import MovieForm, SerialForm, BookForm, GameForm
-
 from core.constants_content import COUNT_OBJ_ON_PAGE
 
 
@@ -13,213 +13,182 @@ class Home(generic.TemplateView):
     template_name = 'content/home.html'
 
 
-def movie(request):
-    """Страница фильмов."""
+class BaseView(LoginRequiredMixin):
+    """Базовый класс для CBV."""
 
-    movies = Movie.objects.select_related(
-        'status'
-    ).prefetch_related('genre')
-    paginator = Paginator(movies, COUNT_OBJ_ON_PAGE)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    context = {
-        'page_obj': page_obj
-    }
-    return render(
-        request,
-        'content/content.html',
-        context
-    )
+    def get_queryset(self):
+        return self.model.objects.select_related(
+            'status'
+        ).prefetch_related('genre').filter(user=self.request.user)
 
 
-def movie_create(request, pk=None):
-    if pk:
-        instance = get_object_or_404(Movie, pk=pk)
-    else:
-        instance = None
-    form = MovieForm(
-        request.POST or None,
-        instance=instance
-    )
-    context = {'form': form}
-    if form.is_valid():
+class CreateBaseView(CreateView):
+    """Базоваый класс создания для CBV."""
+
+    def form_valid(self, form):
         new_form = form.save(commit=False)
-        new_form.user = request.user
+        new_form.user = self.request.user
         new_form.save()
-        return redirect('content:movie')
-    return render(
-        request,
-        'content/form.html',
-        context
-    )
+        return super().form_valid(form)
 
 
-def movie_delete(request, pk):
-    instance = get_object_or_404(Movie, pk=pk)
-    context = {'note': instance}
-    if request.method == 'POST':
-        instance.delete()
-        return redirect('content:movie')
-    return render(
-        request,
-        'content/delete.html',
-        context
-    )
+class MovieListView(BaseView, ListView):
+    """Список фильмов."""
+
+    model = Movie
+    paginate_by = COUNT_OBJ_ON_PAGE
+    template_name = 'content/content.html'
 
 
-def serial(request):
-    """Страница сериалов."""
+class MovieDetailView(BaseView, DetailView):
+    """Запись о фильме."""
 
-    serials = Serial.objects.select_related(
-        'status'
-    ).prefetch_related('genre')
-    paginator = Paginator(serials, COUNT_OBJ_ON_PAGE)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    context = {
-        'page_obj': page_obj
-    }
-    return render(
-        request,
-        'content/content.html',
-        context
-    )
+    model = Movie
+    template_name = 'content/detail.html'
 
 
-def serial_create(request, pk=None):
-    if pk:
-        instance = get_object_or_404(Serial, pk=pk)
-    else:
-        instance = None
-    form = SerialForm(
-        request.POST or None,
-        instance=instance
-    )
-    context = {'form': form}
-    if form.is_valid():
-        new_form = form.save(commit=False)
-        new_form.user = request.user
-        new_form.save()
-        return redirect('content:serial')
-    return render(
-        request,
-        'content/form.html',
-        context
-    )
+class MovieCreateView(BaseView, CreateBaseView):
+    """Cоздание записи о фильме."""
+
+    model = Movie
+    form_class = MovieForm
+    template_name = 'content/form.html'
 
 
-def serial_delete(request, pk):
-    instance = get_object_or_404(Serial, pk=pk)
-    context = {'note': instance}
-    if request.method == 'POST':
-        instance.delete()
-        return redirect('content:serial')
-    return render(
-        request,
-        'content/delete.html',
-        context
-    )
+class MovieUpdateView(BaseView, UpdateView):
+    """Редактирование записи о фильме."""
+
+    model = Movie
+    form_class = MovieForm
+    template_name = 'content/form.html'
 
 
-def game(request):
-    """Страница игр."""
+class MovieDeleteView(BaseView, DeleteView):
+    """Удаление записи о фильме."""
 
-    games = Game.objects.select_related(
-        'status'
-    ).prefetch_related('genre')
-    paginator = Paginator(games, COUNT_OBJ_ON_PAGE)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    context = {
-        'page_obj': page_obj
-    }
-    return render(
-        request,
-        'content/content.html',
-        context
-    )
+    model = Movie
+    template_name = 'content/delete.html'
+    success_url = reverse_lazy('content:movie')
 
 
-def game_create(request, pk=None):
-    if pk:
-        instance = get_object_or_404(Game, pk=pk)
-    else:
-        instance = None
-    form = GameForm(
-        request.POST or None,
-        instance=instance
-    )
-    context = {'form': form}
-    if form.is_valid():
-        new_form = form.save(commit=False)
-        new_form.user = request.user
-        new_form.save()
-        return redirect('content:game')
-    return render(
-        request,
-        'content/form.html',
-        context
-    )
+class SerialListView(BaseView, ListView):
+    """Список сериалов."""
+
+    model = Serial
+    paginate_by = COUNT_OBJ_ON_PAGE
+    template_name = 'content/content.html'
 
 
-def game_delete(request, pk):
-    instance = get_object_or_404(Game, pk=pk)
-    context = {'note': instance}
-    if request.method == 'POST':
-        instance.delete()
-        return redirect('content:game')
-    return render(
-        request,
-        'content/delete.html',
-        context
-    )
+class SerialDetailView(BaseView, DetailView):
+    """Запись о сериале."""
+
+    model = Serial
+    template_name = 'content/detail.html'
 
 
-def book(request):
-    """Страница книг."""
+class SerialCreateView(BaseView, CreateBaseView):
+    """Cоздание записи о сериале."""
 
-    books = Book.objects.select_related(
-        'status'
-    ).prefetch_related('genre')
-    paginator = Paginator(books, COUNT_OBJ_ON_PAGE)
-    page_obj = paginator.get_page(request.GET.get('page'))
-    context = {
-        'page_obj': page_obj
-    }
-    return render(
-        request,
-        'content/content.html',
-        context
-    )
+    model = Serial
+    form_class = SerialForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:serial')
 
 
-def book_create(request, pk=None):
-    if pk:
-        instance = get_object_or_404(Book, pk=pk)
-    else:
-        instance = None
-    form = BookForm(
-        request.POST or None,
-        instance=instance
-    )
-    context = {'form': form}
-    if form.is_valid():
-        new_form = form.save(commit=False)
-        new_form.user = request.user
-        new_form.save()
-        return redirect('content:book')
-    return render(
-        request,
-        'content/form.html',
-        context
-    )
+class SerialUpdateView(BaseView, UpdateView):
+    """Редактирование записи о сериале."""
+
+    model = Serial
+    form_class = SerialForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:serial')
 
 
-def book_delete(request, pk):
-    instance = get_object_or_404(Book, pk=pk)
-    context = {'note': instance}
-    if request.method == 'POST':
-        instance.delete()
-        return redirect('content:book')
-    return render(
-        request,
-        'content/delete.html',
-        context
-    )
+class SerialDeleteView(BaseView, DeleteView):
+    """Удаление записи о сериале."""
+
+    model = Serial
+    template_name = 'content/delete.html'
+    success_url = reverse_lazy('content:serial')
+
+
+class GameListView(BaseView, ListView):
+    """Список игр."""
+
+    model = Game
+    paginate_by = COUNT_OBJ_ON_PAGE
+    template_name = 'content/content.html'
+
+
+class GameDetailView(BaseView, DetailView):
+    """Запись о игре."""
+
+    model = Game
+    template_name = 'content/detail.html'
+
+
+class GameCreateView(BaseView, CreateBaseView):
+    """Cоздание записи о игре."""
+
+    model = Game
+    form_class = GameForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:game')
+
+
+class GameUpdateView(BaseView, UpdateView):
+    """Редактирование записи о сериале."""
+
+    model = Game
+    form_class = GameForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:game')
+
+
+class GameDeleteView(BaseView, DeleteView):
+    """Удаление записи о сериале."""
+
+    model = Game
+    template_name = 'content/delete.html'
+    success_url = reverse_lazy('content:game')
+
+
+class BookListView(BaseView, ListView):
+    """Список книг."""
+
+    model = Book
+    paginate_by = COUNT_OBJ_ON_PAGE
+    template_name = 'content/content.html'
+
+
+class BookDetailView(BaseView, DetailView):
+    """Запись о книге."""
+
+    model = Book
+    template_name = 'content/detail.html'
+
+
+class BookCreateView(BaseView, CreateBaseView):
+    """Cоздание записи о книге."""
+
+    model = Book
+    form_class = BookForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:book')
+
+
+class BookUpdateView(BaseView, UpdateView):
+    """Редактирование записи о книге."""
+
+    model = Book
+    form_class = BookForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:book')
+
+
+class BookDeleteView(BaseView, DeleteView):
+    """Удаление записи о книге."""
+
+    model = Book
+    template_name = 'content/delete.html'
+    success_url = reverse_lazy('content:book')

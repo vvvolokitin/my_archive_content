@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator, MaxValueValidator
 
@@ -141,6 +142,12 @@ class Movie(BaseContentModel):
             )
         ]
 
+    def get_absolute_url(self):
+        return reverse(
+            'content:movie_detail',
+            kwargs={"pk": self.pk}
+        )
+
 
 class Serial(BaseContentModel):
     """Модель сериалов."""
@@ -170,6 +177,12 @@ class Serial(BaseContentModel):
             )
         ]
 
+    def get_absolute_url(self):
+        return reverse(
+            'content:serial_detail',
+            kwargs={"pk": self.pk}
+        )
+
 
 class Game(BaseContentModel):
     """Модель игр."""
@@ -194,6 +207,12 @@ class Game(BaseContentModel):
                 name='unique_game'
             )
         ]
+
+    def get_absolute_url(self):
+        return reverse(
+            'content:game_detail',
+            kwargs={"pk": self.pk}
+        )
 
 
 class Book(BaseContentModel):
@@ -227,3 +246,9 @@ class Book(BaseContentModel):
                 name='unique_book'
             )
         ]
+
+    def get_absolute_url(self):
+        return reverse(
+            'content:book_detail',
+            kwargs={"pk": self.pk}
+        )
