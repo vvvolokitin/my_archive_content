@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from content.models import Movie, Serial, Game, Book
 from content.forms import MovieForm, SerialForm, BookForm, GameForm
 from core.constants_content import COUNT_OBJ_ON_PAGE
+from content.mixins import CheckUserObject
 
 
 class Home(generic.TemplateView):
@@ -26,9 +27,7 @@ class CreateBaseView(CreateView):
     """Базоваый класс создания для CBV."""
 
     def form_valid(self, form):
-        new_form = form.save(commit=False)
-        new_form.user = self.request.user
-        new_form.save()
+        form.instance.user = self.request.user
         return super().form_valid(form)
 
 
@@ -40,7 +39,7 @@ class MovieListView(BaseView, ListView):
     template_name = 'content/content.html'
 
 
-class MovieDetailView(BaseView, DetailView):
+class MovieDetailView(BaseView, CheckUserObject, DetailView):
     """Запись о фильме."""
 
     model = Movie
@@ -55,7 +54,7 @@ class MovieCreateView(BaseView, CreateBaseView):
     template_name = 'content/form.html'
 
 
-class MovieUpdateView(BaseView, UpdateView):
+class MovieUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о фильме."""
 
     model = Movie
@@ -63,7 +62,7 @@ class MovieUpdateView(BaseView, UpdateView):
     template_name = 'content/form.html'
 
 
-class MovieDeleteView(BaseView, DeleteView):
+class MovieDeleteView(BaseView, CheckUserObject, DeleteView):
     """Удаление записи о фильме."""
 
     model = Movie
@@ -79,7 +78,7 @@ class SerialListView(BaseView, ListView):
     template_name = 'content/content.html'
 
 
-class SerialDetailView(BaseView, DetailView):
+class SerialDetailView(BaseView, CheckUserObject, DetailView):
     """Запись о сериале."""
 
     model = Serial
@@ -95,7 +94,7 @@ class SerialCreateView(BaseView, CreateBaseView):
     success_url = reverse_lazy('content:serial')
 
 
-class SerialUpdateView(BaseView, UpdateView):
+class SerialUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о сериале."""
 
     model = Serial
@@ -104,7 +103,7 @@ class SerialUpdateView(BaseView, UpdateView):
     success_url = reverse_lazy('content:serial')
 
 
-class SerialDeleteView(BaseView, DeleteView):
+class SerialDeleteView(BaseView, CheckUserObject, DeleteView):
     """Удаление записи о сериале."""
 
     model = Serial
@@ -120,7 +119,7 @@ class GameListView(BaseView, ListView):
     template_name = 'content/content.html'
 
 
-class GameDetailView(BaseView, DetailView):
+class GameDetailView(BaseView, CheckUserObject, DetailView):
     """Запись о игре."""
 
     model = Game
@@ -136,7 +135,7 @@ class GameCreateView(BaseView, CreateBaseView):
     success_url = reverse_lazy('content:game')
 
 
-class GameUpdateView(BaseView, UpdateView):
+class GameUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о сериале."""
 
     model = Game
@@ -145,7 +144,7 @@ class GameUpdateView(BaseView, UpdateView):
     success_url = reverse_lazy('content:game')
 
 
-class GameDeleteView(BaseView, DeleteView):
+class GameDeleteView(BaseView, CheckUserObject, DeleteView):
     """Удаление записи о сериале."""
 
     model = Game
@@ -161,7 +160,7 @@ class BookListView(BaseView, ListView):
     template_name = 'content/content.html'
 
 
-class BookDetailView(BaseView, DetailView):
+class BookDetailView(BaseView, CheckUserObject, DetailView):
     """Запись о книге."""
 
     model = Book
@@ -177,7 +176,7 @@ class BookCreateView(BaseView, CreateBaseView):
     success_url = reverse_lazy('content:book')
 
 
-class BookUpdateView(BaseView, UpdateView):
+class BookUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о книге."""
 
     model = Book
@@ -186,7 +185,7 @@ class BookUpdateView(BaseView, UpdateView):
     success_url = reverse_lazy('content:book')
 
 
-class BookDeleteView(BaseView, DeleteView):
+class BookDeleteView(BaseView, CheckUserObject, DeleteView):
     """Удаление записи о книге."""
 
     model = Book

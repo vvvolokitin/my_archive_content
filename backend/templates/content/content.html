@@ -6,36 +6,37 @@
       <div class="card">
         <div class="card-header"> <h2>Список</h2></div>
 
-
+    
     {% for object in page_obj %}
-    <div class="card-body">
-        <a href= 
-          {% if 'movie' in request.path %} "{% url 'content:movie_detail' object.pk %}"
-          {% elif 'serial' in request.path %}  "{% url 'content:serial_detail' object.pk %}"
-          {% elif 'book' in request.path %}  "{% url 'content:book_detail' object.pk %}" 
-          {% elif 'game' in request.path %}  "{% url 'content:game_detail' object.pk %}"
-          {% endif %} >
-          <font color = "black"><h6>
-        {{ object.title }} 
-        | {{ object.year }} г. 
-        {% if object.author %}
-          | Автор: {{ object.author }} 
-        {% endif %}
-          | Статус: {{ object.status.status }}
-        {% if object.genre.all %}
-        | Жанр: {% for genre in object.genre.all %}
-          {{ genre.name }}
-          {% if forloop.last%}
-          {% else%}
-          , 
+      <div class="card-body">
+          <a href= 
+            {% if 'movie' in request.path %} "{% url 'content:movie_detail' object.pk %}"
+            {% elif 'serial' in request.path %}  "{% url 'content:serial_detail' object.pk %}"
+            {% elif 'book' in request.path %}  "{% url 'content:book_detail' object.pk %}" 
+            {% elif 'game' in request.path %}  "{% url 'content:game_detail' object.pk %}"
+            {% endif %} >
+            <font color = "black"><h6>
+          {{ object.title }} 
+          | {{ object.year }} г. 
+          {% if object.author %}
+            | Автор: {{ object.author }} 
           {% endif %}
-        {% endfor %}
-        {% endif %}
-          </h4>
-          </font>
-        </a>
-      </div>
+            | Статус: {{ object.status.status }}
+          {% if object.genre.all %}
+          | Жанр: {% for genre in object.genre.all %}
+            {{ genre.name }}
+            {% if forloop.last%}
+            {% else%}
+            , 
+            {% endif %}
+          {% endfor %}
+          {% endif %}
+            </h4>
+            </font>
+          </a>
+        </div>
     {% endfor %}
+    
   </div>
 </div>
 </div>
