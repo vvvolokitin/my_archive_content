@@ -2,38 +2,40 @@
 
 {% block content %}
 <div class="row justify-content-center">
-  <div class="col-md-6 p-5">
+  <div class="col-md-7 p-4">
       <div class="card">
         <div class="card-header"> <h2>Список</h2></div>
 
     
     {% for object in page_obj %}
       <div class="card-body">
+        <font color = "black"><h6>
           <a href= 
             {% if 'movie' in request.path %} "{% url 'content:movie_detail' object.pk %}"
             {% elif 'serial' in request.path %}  "{% url 'content:serial_detail' object.pk %}"
             {% elif 'book' in request.path %}  "{% url 'content:book_detail' object.pk %}" 
             {% elif 'game' in request.path %}  "{% url 'content:game_detail' object.pk %}"
             {% endif %} >
-            <font color = "black"><h6>
-          {{ object.title }} 
+            
+          {{ object.title|capfirst }} 
           | {{ object.year }} г. 
           {% if object.author %}
-            | Автор: {{ object.author }} 
+            | Автор: {{ object.author|title }} 
           {% endif %}
-            | Статус: {{ object.status.status }}
+        </a>
+          <div>
+            Статус: {{ object.status.status }}
+          </div>
+          <div>
+          {% spaceless %}
           {% if object.genre.all %}
-          | Жанр: {% for genre in object.genre.all %}
-            {{ genre.name }}
-            {% if forloop.last%}
-            {% else%}
-            , 
-            {% endif %}
-          {% endfor %}
+          Жанр(ы): {{ object.genre.all |join:", "|lower }} 
           {% endif %}
-            </h4>
-            </font>
-          </a>
+          {% endspaceless %}
+          </div>
+          </h6>
+        </font>
+          
         </div>
     {% endfor %}
     

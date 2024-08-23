@@ -18,9 +18,15 @@ class BaseView(LoginRequiredMixin):
     """Базовый класс для CBV."""
 
     def get_queryset(self):
-        return self.model.objects.select_related(
+        queryset = self.model.objects.select_related(
             'status'
         ).prefetch_related('genre').filter(user=self.request.user)
+        if self.request.GET.get('status'):
+            queryset = queryset.filter(
+                status__status=self.request.GET.get('status')
+            )
+
+        return queryset
 
 
 class CreateBaseView(CreateView):

@@ -45,10 +45,11 @@
       </ul>
     </div>
     {% if user.is_authenticated and view_name != 'content:home' %}
+    
     <div class="container">
       <ul class="nav nav-pills">
         <li class="nav-item">
-          <a class="nav-link" href=
+          <a class="nav-link {% if 'create' in request.path %}active{%endif%}" href=
             {% if 'movie' in request.path %} "{% url  'content:movie_create'%}"
             {% elif 'serial' in request.path %}  "{% url  'content:serial_create' %}"
             {% elif 'book' in request.path %}  "{% url  'content:book_create' %}" 
@@ -57,8 +58,31 @@
             "{% url 'content:home' %}">
           <font color = "white">Добавить запись</font></a>
         </li>
+        {% if  view_name == 'content:movie' or  view_name == 'content:game' or view_name == 'content:serial' or view_name == 'content:book'%}
+        <li>
+          <form>
+            <button  style="background-color {% if request.GET.status == '' or not request.GET.status %}active{% endif %}: transparent; background-repeat: no-repeat; border: none; cursor: pointer; overflow: hidden; outline: none;"  type="submit"  name="status"  class="btn btn-primary" id="submit_button"><font color = "white">Все записи</font></button>  
+          </form>
+        </li>
+        <li>
+          <form>
+            <button  style="background-color {% if request.GET.status == 'архив'%}active{% endif %}: transparent; background-repeat: no-repeat; border: none; cursor: pointer; overflow: hidden; outline: none;"  type="submit" value="архив" name="status"  class="btn btn-primary" id="submit_button"><font color = "white">Архив</font></button>  
+          </form>
+        </li>
+        <li>
+          <form>
+            <button  style="background-color{% if request.GET.status == 'в процессе'%}active{% endif %}: transparent; background-repeat: no-repeat; border: none; cursor: pointer; overflow: hidden; outline: none;"  type="submit" value="в процессе" name="status"  class="btn btn-primary" id="submit_button"><font color = "white">В процессе</font></button>  
+          </form>
+        </li>
+        <li>
+          <form>
+            <button  style="background-color{% if request.GET.status == 'готово'%}active{% endif %}: transparent; background-repeat: no-repeat; border: none; cursor: pointer; overflow: hidden; outline: none;"  type="submit" value="готово" name="status"  class="btn btn-primary" id="submit_button"><font color = "white">Готово</font></button>  
+          </form>
+        </li>
+        {% endif %}
       </ul>
     </div>
+    
     {% endif %}
     </nav>
     {% endwith %}

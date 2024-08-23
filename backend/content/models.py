@@ -123,7 +123,8 @@ class Movie(BaseContentModel):
     )
     genre = models.ManyToManyField(
         MovieGenre,
-        related_name='movies'
+        related_name='movies',
+        help_text='Удерживайте Ctrl для выбора нескольких вариантов'
     )
     user = models.ForeignKey(
         User,
@@ -158,7 +159,8 @@ class Serial(BaseContentModel):
     )
     genre = models.ManyToManyField(
         MovieGenre,
-        related_name='serials'
+        related_name='serials',
+        help_text='Удерживайте Ctrl для выбора нескольких вариантов'
     )
     user = models.ForeignKey(
         User,
@@ -189,7 +191,8 @@ class Game(BaseContentModel):
 
     genre = models.ManyToManyField(
         GameGenre,
-        related_name='games'
+        related_name='games',
+        help_text='Удерживайте Ctrl для выбора нескольких вариантов'
     )
     user = models.ForeignKey(
         User,
@@ -228,7 +231,8 @@ class Book(BaseContentModel):
     )
     genre = models.ManyToManyField(
         BookGenre,
-        related_name='books'
+        related_name='books',
+        help_text='Удерживайте Ctrl для выбора нескольких вариантов'
     )
     user = models.ForeignKey(
         User,
