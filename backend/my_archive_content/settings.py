@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -117,3 +116,5 @@ EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
 
 LOGIN_REDIRECT_URL = 'content:home'
 LOGIN_URL = 'login'
+
+CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
