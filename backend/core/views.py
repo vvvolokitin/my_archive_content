@@ -9,6 +9,14 @@ def page_not_found(request, exception):
         status=404
     )
 
+def page_error(request):
+    """Ошибка 500."""
+    return render(
+        request,
+        'core/500.html',
+        status=404
+    )
+
 
 def csrf_failure(request, reason=''):
     """Ошибка 403."""
