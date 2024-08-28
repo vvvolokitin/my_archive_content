@@ -74,7 +74,7 @@ class TestRoute(TestCase):
                 response = self.client.get(reverse(url_name))
                 self.assertEqual(response.status_code, HTTPStatus.OK)
 
-    def test_availability_for_authenticated_user(self):
+    def test_availability_for_authenticated_client(self):
         """Проверка доступности страниц для аутентифицированного пользователя."""
         url_names = (
             ('content:movie'),
