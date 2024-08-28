@@ -6,11 +6,12 @@
       <div class="card">
         <div class="card-header"><h2>
           {% if '/create/' in request.path %}
-            Добавить
+            Добавить запись
+          {% elif '/edit_status/' in request.path %}
+            Изменить статус
           {% else %}
-            Редактировать
+            Изменить запись
           {% endif %}
-          запись
         </h2></div>
  
         <div class="card-body">

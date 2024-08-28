@@ -1,12 +1,18 @@
-from django.views import generic
-from django.views.generic import ListView, UpdateView, DeleteView, CreateView, DetailView
-from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
-
-from content.models import Movie, Serial, Game, Book
-from content.forms import MovieForm, SerialForm, BookForm, GameForm
-from core.constants_content import COUNT_OBJ_ON_PAGE
+from content.forms import (BookCreationForm, BookUpdateForm,
+                           BookUpdateStatusForm, GameCreationForm,
+                           GameUpdateForm, GameUpdateStatusForm,
+                           MovieCreationForm, MovieUpdateForm,
+                           MovieUpdateStatusForm, SerialCreationForm,
+                           SerialUpdateForm, SerialUpdateStatusForm)
 from content.mixins import CheckUserObject
+from content.models import Book, Game, Movie, Serial
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views import generic
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  UpdateView)
+
+from core.constants_content import COUNT_OBJ_ON_PAGE
 
 
 class Home(generic.TemplateView):
@@ -25,7 +31,6 @@ class BaseView(LoginRequiredMixin):
             queryset = queryset.filter(
                 status__status=self.request.GET.get('status')
             )
-
         return queryset
 
 
@@ -35,6 +40,11 @@ class CreateBaseView(CreateView):
     def form_valid(self, form):
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class MovieListView(BaseView, ListView):
@@ -56,7 +66,7 @@ class MovieCreateView(BaseView, CreateBaseView):
     """Cоздание записи о фильме."""
 
     model = Movie
-    form_class = MovieForm
+    form_class = MovieCreationForm
     template_name = 'content/form.html'
 
 
@@ -64,7 +74,15 @@ class MovieUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о фильме."""
 
     model = Movie
-    form_class = MovieForm
+    form_class = MovieUpdateForm
+    template_name = 'content/form.html'
+
+
+class MovieStatusUpdateView(BaseView, CheckUserObject, UpdateView):
+    """Редактирование статуса фильма."""
+
+    model = Movie
+    form_class = MovieUpdateStatusForm
     template_name = 'content/form.html'
 
 
@@ -95,7 +113,7 @@ class SerialCreateView(BaseView, CreateBaseView):
     """Cоздание записи о сериале."""
 
     model = Serial
-    form_class = SerialForm
+    form_class = SerialCreationForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:serial')
 
@@ -104,7 +122,16 @@ class SerialUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о сериале."""
 
     model = Serial
-    form_class = SerialForm
+    form_class = SerialUpdateForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:serial')
+
+
+class SerialStatusUpdateView(BaseView, CheckUserObject, UpdateView):
+    """Редактирование статуса серила."""
+
+    model = Serial
+    form_class = SerialUpdateStatusForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:serial')
 
@@ -136,16 +163,25 @@ class GameCreateView(BaseView, CreateBaseView):
     """Cоздание записи о игре."""
 
     model = Game
-    form_class = GameForm
+    form_class = GameCreationForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:game')
 
 
 class GameUpdateView(BaseView, CheckUserObject, UpdateView):
-    """Редактирование записи о сериале."""
+    """Редактирование записи об игре."""
 
     model = Game
-    form_class = GameForm
+    form_class = GameUpdateForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:game')
+
+
+class GameStatusUpdateView(BaseView, CheckUserObject, UpdateView):
+    """Редактирование статуса игры."""
+
+    model = Game
+    form_class = GameUpdateStatusForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:game')
 
@@ -177,7 +213,7 @@ class BookCreateView(BaseView, CreateBaseView):
     """Cоздание записи о книге."""
 
     model = Book
-    form_class = BookForm
+    form_class = BookCreationForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:book')
 
@@ -186,7 +222,16 @@ class BookUpdateView(BaseView, CheckUserObject, UpdateView):
     """Редактирование записи о книге."""
 
     model = Book
-    form_class = BookForm
+    form_class = BookUpdateForm
+    template_name = 'content/form.html'
+    success_url = reverse_lazy('content:book')
+
+
+class BookStatusUpdateView(BaseView, CheckUserObject, UpdateView):
+    """Редактирование статуса книги."""
+
+    model = Book
+    form_class = BookUpdateStatusForm
     template_name = 'content/form.html'
     success_url = reverse_lazy('content:book')
 

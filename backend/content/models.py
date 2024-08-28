@@ -139,7 +139,7 @@ class Movie(BaseContentModel):
         constraints = [
             models.UniqueConstraint(
                 fields=['title', 'year', 'user'],
-                name='unique_movie'
+                name='unique_movie',
             )
         ]
 

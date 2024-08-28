@@ -33,6 +33,12 @@
     {% elif 'game' in request.path %}  "{% url 'content:game_edit' object.pk %}"
     {% endif %} >Изменить запись</a> | 
     <a href= 
+    {% if 'movie' in request.path %} "{% url 'content:movie_edit_status' object.pk %}"
+    {% elif 'serial' in request.path %}  "{% url 'content:serial_edit_status' object.pk %}"
+    {% elif 'book' in request.path %}  "{% url 'content:book_edit_status' object.pk %}" 
+    {% elif 'game' in request.path %}  "{% url 'content:game_edit_status' object.pk %}"
+    {% endif %} >Изменить статус</a> |
+    <a href= 
     {% if 'movie' in request.path %} "{% url 'content:movie_delete' object.pk %}"
     {% elif 'serial' in request.path %}  "{% url 'content:serial_delete' object.pk %}"
     {% elif 'book' in request.path %}  "{% url 'content:book_delete' object.pk %}" 
