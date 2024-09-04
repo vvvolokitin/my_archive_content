@@ -1,8 +1,17 @@
-from django.test import TestCase, Client
-from django.urls import reverse
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
 
-from content.models import Movie, Serial, Book, Game, Status, BookGenre, MovieGenre, GameGenre
+from content.models import (
+    Book,
+    BookGenre,
+    Game,
+    GameGenre,
+    Movie,
+    MovieGenre,
+    Serial,
+    Status,
+)
 
 
 User = get_user_model()
@@ -47,34 +56,6 @@ class TestCreate(TestCase):
             'description': 'новое описание',
             'status': cls.status,
         }
-
-    def test_authenticated_user_can_create_note(self):
-        """Аутентифицированный пользователь может создать запись."""
-        data = (
-            ('content:movie_create', Movie, self.movie_data),
-            ('content:serial_create', Serial, self.serial_data),
-            ('content:book_create', Book, self.book_data),
-            ('content:game_create', Game, self.game_data),
-        )
-        response = self.author_client.post(
-            reverse('content:movie_create'),
-            data=self.movie_data
-        )
-        print(response.__dict__)
-        print(Movie.objects.all())
-
-        # for url_name, model, form_data in data:
-        #     with self.subTest(url_name=url_name, model=model):
-        #         response = self.author_client.post(
-        #             reverse(url_name),
-        #             data=form_data
-        #         )
-        #         object = model.objects.get()
-        #         print(object)
-        #         # self.assertEqual(
-        #         #     model.objects.count(),
-        #         #     1
-        #         # )
 
     def test_anonymous_user_cant_create_note(self):
         """Анонимный пользователь не может создать запись."""

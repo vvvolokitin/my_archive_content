@@ -1,4 +1,4 @@
-from django.urls import path, include, reverse_lazy
+from django.urls import include, path, reverse_lazy
 from django.views.generic.edit import CreateView
 
 from users.forms import CustomUserCreationForm

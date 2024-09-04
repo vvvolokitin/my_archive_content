@@ -4,8 +4,16 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from content.models import Movie, Serial, Book, Game, Status, BookGenre, MovieGenre, GameGenre
-
+from content.models import (
+    Book,
+    BookGenre,
+    Game,
+    GameGenre,
+    Movie,
+    MovieGenre,
+    Serial,
+    Status
+)
 
 User = get_user_model()
 

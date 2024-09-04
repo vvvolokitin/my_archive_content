@@ -1,17 +1,30 @@
-from content.forms import (BookCreationForm, BookUpdateForm,
-                           BookUpdateStatusForm, GameCreationForm,
-                           GameUpdateForm, GameUpdateStatusForm,
-                           MovieCreationForm, MovieUpdateForm,
-                           MovieUpdateStatusForm, SerialCreationForm,
-                           SerialUpdateForm, SerialUpdateStatusForm)
-from content.mixins import CheckUserObject
-from content.models import Book, Game, Movie, Serial
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
-from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
-                                  UpdateView)
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView
+)
 
+from content.forms import (
+    BookCreationForm,
+    BookUpdateForm,
+    BookUpdateStatusForm,
+    GameCreationForm,
+    GameUpdateForm,
+    GameUpdateStatusForm,
+    MovieCreationForm,
+    MovieUpdateForm,
+    MovieUpdateStatusForm,
+    SerialCreationForm,
+    SerialUpdateForm,
+    SerialUpdateStatusForm
+)
+from content.mixins import CheckUserObject
+from content.models import Book, Game, Movie, Serial
 from core.constants_content import COUNT_OBJ_ON_PAGE
 
 
