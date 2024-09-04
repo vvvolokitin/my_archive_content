@@ -13,7 +13,7 @@ My_Archive_Content - это проект на Django, предназначенн
 ### Стек технологий
 - Python
 - Django
-- 
+- Pytest
 ### Как запустить проект
 1. Установите Python и pip.
 2. Выполните команду `pip install -r requirements.txt` для установки зависимостей.
