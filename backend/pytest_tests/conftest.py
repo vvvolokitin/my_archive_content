@@ -12,6 +12,7 @@ from content.models import (
     Serial,
     Status
 )
+from core.constants_content import COUNT_OBJ_ON_PAGE
 
 
 @pytest.fixture
@@ -66,6 +67,20 @@ def movie(author, movie_genre, status):
 
 
 @pytest.fixture
+def movies(author, status):
+    Movie.objects.bulk_create(
+        Movie(
+            title=f'фильм {index}',
+            year=2024,
+            description='описание',
+            status=status,
+            original_title='movie',
+            user=author
+        ) for index in range(COUNT_OBJ_ON_PAGE+1)
+    )
+
+
+@pytest.fixture
 def movie_pk(movie):
     return (movie.pk,)
 
@@ -82,6 +97,20 @@ def serial(author, movie_genre, status):
     )
     serial.genre.set((movie_genre,))
     return serial
+
+
+@pytest.fixture
+def serials(author, status):
+    Serial.objects.bulk_create(
+        Serial(
+            title=f'сериал {index}',
+            year=2024,
+            description='описание',
+            status=status,
+            original_title='serial',
+            user=author
+        ) for index in range(COUNT_OBJ_ON_PAGE+1)
+    )
 
 
 @pytest.fixture
@@ -113,6 +142,21 @@ def book(author, book_genre, status):
 
 
 @pytest.fixture
+def books(author, status):
+    Book.objects.bulk_create(
+        Book(
+            title=f'книга {index}',
+            year=2024,
+            description='описание',
+            status=status,
+            original_title='book',
+            author='автор',
+            user=author
+        ) for index in range(COUNT_OBJ_ON_PAGE+1)
+    )
+
+
+@pytest.fixture
 def book_pk(book):
     return (book.pk,)
 
@@ -136,6 +180,19 @@ def game(author, game_genre, status):
     )
     game.genre.set((game_genre,))
     return game
+
+
+@pytest.fixture
+def games(author, status):
+    Game.objects.bulk_create(
+        Game(
+            title=f'игра {index}',
+            year=2024,
+            description='описание',
+            status=status,
+            user=author
+        ) for index in range(COUNT_OBJ_ON_PAGE+1)
+    )
 
 
 @pytest.fixture

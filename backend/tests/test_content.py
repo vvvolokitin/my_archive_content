@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 
 from core.constants_content import COUNT_OBJ_ON_PAGE
 from content.models import Movie, Serial, Book, Game, Status, BookGenre, MovieGenre, GameGenre
-from content.forms import MovieForm, SerialForm, BookForm, GameForm
+from content.forms import MovieCreationForm, SerialCreationForm, BookCreationForm, GameCreationForm
 
 
 User = get_user_model()
@@ -146,10 +146,10 @@ class TestDetailPage(TestCase):
     def test_authenticated_client_has_form(self):
         """Проверка наличия формы у аутенитфицированного пользователя."""
         data = (
-            ('content:movie_create', MovieForm),
-            ('content:serial_create', SerialForm),
-            ('content:book_create', BookForm),
-            ('content:game_create', GameForm),
+            ('content:movie_create', MovieCreationForm),
+            ('content:serial_create', SerialCreationForm),
+            ('content:book_create', BookCreationForm),
+            ('content:game_create', GameCreationForm),
         )
 
         for url_name, form in data:
