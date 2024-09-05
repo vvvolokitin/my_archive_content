@@ -48,31 +48,19 @@ def test_availability_for_authenticated_client(not_author_client, url_name):
     'url_name, content_pk',
     (
         ('content:movie_detail', pytest.lazy_fixture('movie_pk')),
-        ('content:movie_detail', pytest.lazy_fixture('movie_pk')),
         ('content:movie_edit', pytest.lazy_fixture('movie_pk')),
-        ('content:movie_edit', pytest.lazy_fixture('movie_pk')),
-        ('content:movie_delete', pytest.lazy_fixture('movie_pk')),
         ('content:movie_delete', pytest.lazy_fixture('movie_pk')),
 
         ('content:serial_detail', pytest.lazy_fixture('serial_pk')),
-        ('content:serial_detail', pytest.lazy_fixture('serial_pk')),
         ('content:serial_edit', pytest.lazy_fixture('serial_pk')),
-        ('content:serial_edit', pytest.lazy_fixture('serial_pk')),
-        ('content:serial_delete', pytest.lazy_fixture('serial_pk')),
         ('content:serial_delete', pytest.lazy_fixture('serial_pk')),
 
         ('content:book_detail', pytest.lazy_fixture('book_pk')),
-        ('content:book_detail', pytest.lazy_fixture('book_pk')),
         ('content:book_edit', pytest.lazy_fixture('book_pk')),
-        ('content:book_edit', pytest.lazy_fixture('book_pk')),
-        ('content:book_delete', pytest.lazy_fixture('book_pk')),
         ('content:book_delete', pytest.lazy_fixture('book_pk')),
 
         ('content:game_detail', pytest.lazy_fixture('game_pk')),
-        ('content:game_detail', pytest.lazy_fixture('game_pk')),
         ('content:game_edit', pytest.lazy_fixture('game_pk')),
-        ('content:game_edit', pytest.lazy_fixture('game_pk')),
-        ('content:game_delete', pytest.lazy_fixture('game_pk')),
         ('content:game_delete', pytest.lazy_fixture('game_pk')),
     )
 )
